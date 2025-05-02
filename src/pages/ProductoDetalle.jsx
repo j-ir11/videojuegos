@@ -93,19 +93,20 @@ const ProductoDetalle = () => {
     );
   }
 
+  
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center text-blue-600 mb-6"
+          className="flex items-center text-blue-600 dark:text-blue-400 mb-6 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
         >
           <ArrowLeft className="mr-2" /> Volver atrás
         </button>
 
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700/50 overflow-hidden transition-colors duration-300">
           <div className="md:flex">
-            <div className="md:flex-shrink-0 md:w-1/2 p-8 bg-gray-50">
+            <div className="md:flex-shrink-0 md:w-1/2 p-8 bg-gray-50 dark:bg-gray-700/30">
               <img
                 className="w-full h-96 object-contain"
                 src={producto.imagen_url}
@@ -113,14 +114,14 @@ const ProductoDetalle = () => {
               />
             </div>
             <div className="p-8 md:w-1/2">
-              <div className="uppercase tracking-wide text-sm text-blue-600 font-semibold">
+              <div className="uppercase tracking-wide text-sm text-blue-600 dark:text-blue-400 font-semibold">
                 {producto.plataforma || "Multiplataforma"}
               </div>
-              <h1 className="block mt-2 text-3xl font-extrabold text-gray-900">
+              <h1 className="block mt-2 text-3xl font-extrabold text-gray-900 dark:text-white">
                 {producto.nombre}
               </h1>
               <div className="mt-4 flex items-center">
-                <div className="flex text-amber-400">
+                <div className="flex text-amber-400 dark:text-amber-300">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
@@ -129,33 +130,33 @@ const ProductoDetalle = () => {
                     />
                   ))}
                 </div>
-                <span className="ml-2 text-gray-600">
+                <span className="ml-2 text-gray-600 dark:text-gray-400">
                   ({producto.reviews || 124} reseñas)
                 </span>
               </div>
-              <p className="mt-6 text-gray-600">{producto.descripcion}</p>
+              <p className="mt-6 text-gray-600 dark:text-gray-300">
+                {producto.descripcion}
+              </p>
 
-              <div className="mt-8 border-t pt-6">
-                <p className="text-3xl font-bold text-gray-900">
+              <div className="mt-8 border-t pt-6 border-gray-200 dark:border-gray-700">
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">
                   ${producto.precio}
                   {producto.precio_original && (
-                    <span className="ml-2 text-lg text-gray-500 line-through">
+                    <span className="ml-2 text-lg text-gray-500 dark:text-gray-400 line-through">
                       ${producto.precio_original}
                     </span>
                   )}
                 </p>
 
-                {/* Mostrar stock disponible */}
-                <p className="mt-2 text-sm text-gray-500">
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                   {stockDisponible > 0 
                     ? `Stock disponible: ${stockDisponible} unidades`
                     : "Producto agotado"}
                 </p>
 
-                {/* Cantidad */}
                 <div className="flex items-center mt-4">
                   <button
-                    className="px-4 py-2 border rounded-lg hover:bg-gray-100"
+                    className="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:border-gray-600 transition-colors"
                     onClick={disminuirCantidad}
                     disabled={cantidad <= 1}
                   >
@@ -165,10 +166,10 @@ const ProductoDetalle = () => {
                     type="text"
                     value={cantidad}
                     readOnly
-                    className="mx-4 w-12 text-center border rounded-lg"
+                    className="mx-4 w-12 text-center border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   />
                   <button
-                    className="px-4 py-2 border rounded-lg hover:bg-gray-100"
+                    className="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:border-gray-600 transition-colors"
                     onClick={aumentarCantidad}
                     disabled={cantidad >= stockDisponible}
                   >
@@ -177,10 +178,10 @@ const ProductoDetalle = () => {
                 </div>
 
                 <button
-                  className={`mt-6 px-6 py-3 text-white font-medium rounded-lg flex items-center ${
+                  className={`mt-6 px-6 py-3 text-white font-medium rounded-lg flex items-center transition-colors ${
                     stockDisponible > 0 
-                      ? "bg-blue-600 hover:bg-blue-700" 
-                      : "bg-gray-400 cursor-not-allowed"
+                      ? "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800" 
+                      : "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
                   }`}
                   onClick={agregarAlCarrito}
                   disabled={stockDisponible <= 0}

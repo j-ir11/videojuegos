@@ -44,10 +44,11 @@ export default function LoginPage() {
     }
   };
 
+ 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <form onSubmit={handleLogin} className="bg-white p-8 rounded shadow-md w-96 space-y-4">
-        <h2 className="text-2xl font-bold mb-4">Iniciar Sesión</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <form onSubmit={handleLogin} className="bg-white dark:bg-gray-800 p-8 rounded shadow-md w-96 space-y-4">
+        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Iniciar Sesión</h2>
 
         {error && <p className="text-red-500">{error}</p>}
 
@@ -58,7 +59,7 @@ export default function LoginPage() {
           placeholder="Correo electrónico"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full border rounded px-4 py-2"
+          className="w-full border rounded px-4 py-2 bg-gray-50 dark:bg-gray-700 dark:text-white"
           required
         />
 
@@ -67,7 +68,7 @@ export default function LoginPage() {
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full border rounded px-4 py-2"
+          className="w-full border rounded px-4 py-2 bg-gray-50 dark:bg-gray-700 dark:text-white"
           required
         />
 
@@ -77,9 +78,9 @@ export default function LoginPage() {
           Iniciar sesión
         </button>
 
-        <p className="text-center text-sm">
+        <p className="text-center text-sm text-gray-700 dark:text-gray-300">
           ¿No tienes cuenta?{" "}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          <Link to="/register" className="text-blue-600 hover:underline dark:text-blue-400">
             Regístrate
           </Link>
         </p>
@@ -87,7 +88,7 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={handleGoBack}
-          className="w-full bg-gray-500 text-white px-4 py-2 rounded mt-4 hover:bg-gray-600">
+          className="w-full bg-gray-500 text-white px-4 py-2 rounded mt-4 hover:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-500">
           Regresar
         </button>
       </form>

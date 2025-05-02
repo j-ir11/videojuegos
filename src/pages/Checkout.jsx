@@ -192,40 +192,36 @@ const Checkout = () => {
     }
   };
 
-
-
-
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header y navegación */}
         <div className="flex items-center mb-8">
           <button
             onClick={() => step === 'pago' ? setStep('direccion') : navigate(-1)}
-            className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+            className="flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-500"
           >
             <ArrowLeft className="mr-2" />
             {step === 'pago' ? 'Cambiar dirección' : 'Volver'}
           </button>
-
+  
           <div className="ml-auto flex items-center space-x-2">
-            <span className={`px-3 py-1 rounded-full text-sm ${step === 'direccion' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}>
+            <span className={`px-3 py-1 rounded-full text-sm ${step === 'direccion' ? 'bg-blue-700 text-blue-200' : 'bg-gray-300 dark:bg-gray-700'}`}>
               1. Dirección
             </span>
-            <span className={`px-3 py-1 rounded-full text-sm ${step === 'pago' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}>
+            <span className={`px-3 py-1 rounded-full text-sm ${step === 'pago' ? 'bg-blue-700 text-blue-200' : 'bg-gray-300 dark:bg-gray-700'}`}>
               2. Pago
             </span>
           </div>
         </div>
-
+  
         {error && (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
+          <div className="bg-red-600 border-l-4 border-red-800 text-red-100 p-4 mb-6 rounded">
             <p>{error}</p>
           </div>
         )}
-
+  
         {/* Contenido principal */}
-
         {step === 'direccion' ? (
           <FormularioDireccion
             direcciones={direcciones}
@@ -243,9 +239,9 @@ const Checkout = () => {
           />
         ) : (
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Formulario de pago - Izquierda */}
+            {/* Formulario de pago */}
             <div className="lg:w-2/3">
-              <div className="bg-white rounded-xl shadow-sm p-6">
+              <div className="bg-gray-100 dark:bg-gray-800 rounded-xl shadow-sm p-6">
                 <FormularioPago
                   onProcesarPago={handleProcesarPago}
                   onCancelar={() => setStep('direccion')}
@@ -253,12 +249,14 @@ const Checkout = () => {
                 />
               </div>
             </div>
-
-            {/* Resumen del pedido - Derecha */}
+  
+            {/* Resumen del pedido */}
             <div className="lg:w-1/3">
-              <div className="bg-white rounded-xl shadow-sm p-6 sticky top-4">
-                <h3 className="font-bold text-lg mb-4 pb-2 border-b">Resumen del pedido</h3>
-
+              <div className="bg-gray-100 dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                <h3 className="font-bold text-lg mb-4 pb-2 border-b border-gray-300 dark:border-gray-700">
+                  Resumen del pedido
+                </h3>
+  
                 <div className="space-y-4 max-h-[400px] overflow-y-auto">
                   {carrito.map(item => (
                     <div key={item.id_producto} className="flex gap-4 py-2">
@@ -272,26 +270,26 @@ const Checkout = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">{item.nombre}</p>
-                        <p className="text-gray-600 text-sm">Cantidad: {item.cantidad}</p>
-                        <p className="text-gray-600 text-sm">${item.precio.toFixed(2)} c/u</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">Cantidad: {item.cantidad}</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">${item.precio.toFixed(2)} c/u</p>
                       </div>
-                      <div className="font-medium">
+                      <div className="font-medium text-gray-900 dark:text-gray-100">
                         ${(item.precio * item.cantidad).toFixed(2)}
                       </div>
                     </div>
                   ))}
                 </div>
-
-                <div className="mt-6 pt-4 border-t">
+  
+                <div className="mt-6 pt-4 border-t border-gray-300 dark:border-gray-700">
                   <div className="flex justify-between mb-2">
-                    <span className="text-gray-600">Subtotal</span>
+                    <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
                     <span>${total.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-gray-600">Envío</span>
-                    <span className="text-green-600">Gratis</span>
+                    <span className="text-gray-600 dark:text-gray-400">Envío</span>
+                    <span className="text-green-600 dark:text-green-400">Gratis</span>
                   </div>
-                  <div className="flex justify-between font-bold text-lg mt-4 pt-2 border-t">
+                  <div className="flex justify-between font-bold text-lg mt-4 pt-2 border-t border-gray-300 dark:border-gray-700">
                     <span>Total</span>
                     <span>${total.toFixed(2)}</span>
                   </div>
@@ -303,5 +301,6 @@ const Checkout = () => {
       </div>
     </div>
   );
+  
 };
 export default Checkout;
