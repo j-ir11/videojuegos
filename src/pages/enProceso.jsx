@@ -10,8 +10,15 @@ const EnProceso = () => {
   useEffect(() => {
     if (!state?.pedido || !state?.productos || !state?.direccion) {
       navigate('/', { replace: true });
+    } else {
+      // Limpiar historial anterior: navega a /, luego vuelve a /enProceso
+      navigate('/', { replace: true });
+      setTimeout(() => {
+        navigate('/enProceso', { replace: true, state });
+      }, 0);
     }
-  }, [state, navigate]);
+  }, []);
+  
 
   // Datos del pedido o valores por defecto
   const pedido = state?.pedido || {};

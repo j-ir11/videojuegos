@@ -173,6 +173,7 @@ const Checkout = () => {
 
       // 6. Redirigir a confirmación
       navigate("/enProceso", {
+        replace: true, // <- Esto es clave
         state: {
           pedido: pedido,
           direccion: direccion,
@@ -180,6 +181,7 @@ const Checkout = () => {
           total: total
         }
       });
+      
 
       // 7. Limpiar carrito
       localStorage.removeItem('carrito');
