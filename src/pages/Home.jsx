@@ -115,7 +115,7 @@ export default function Home() {
                 <div className="flex items-center space-x-2">
                   {userName && (
                     <span className="text-gray-700 font-medium">
-                      Hola, {userName}
+                      {userName}
                     </span>
                   )}
                   <button
