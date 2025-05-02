@@ -82,11 +82,11 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen overflow-x-hidden">
       {/* Encabezado */}
       <header className="sticky top-0 z-50 bg-white shadow-sm w-full">
         <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-24">
+        <div className="flex flex-col sm:flex-row sm:items-center h-auto sm:h-24 py-4 sm:py-0 space-y-4 sm:space-y-0">
             {/* Logo más grande y llamativo */}
             <div>
               <span className="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -142,7 +142,7 @@ export default function Home() {
       {/* Contenido principal */}
       <main className="flex-grow overflow-y-auto">
         {/* Barra de búsqueda */}
-        <div className="max-w-md mx-auto mb-12 relative mt-6">
+        <div className="w-full max-w-md mx-auto px-2 mb-12 relative mt-6">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-gray-400" />
           </div>
@@ -163,7 +163,7 @@ export default function Home() {
 
         {/* Grid de productos */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-2 sm:px-4">
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
@@ -176,7 +176,7 @@ export default function Home() {
             ))}
           </div>
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-2 sm:px-4">
             {products.map((producto) => (
               <ProductCard
                 key={`product-${producto.id_producto}`}
