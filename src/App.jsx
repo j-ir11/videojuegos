@@ -4,7 +4,6 @@ import ProductoDetalle from "./pages/ProductoDetalle";
 import RegisterPage from "./pages/registerPage";
 import Carrito from "./pages/Carrito";
 import LoginPage from "./pages/loginPage";
-import RegisterPage from "./pages/registerPage";
 import Checkout from "./pages/Checkout";
 import EnProceso from "./pages/enProceso";
 import HistorialPedidos from "./pages/historialPedidos";

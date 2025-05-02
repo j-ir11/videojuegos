@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../services/supabaseClient";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -49,7 +50,7 @@ export default function LoginPage() {
         <h2 className="text-2xl font-bold mb-4">Iniciar Sesión</h2>
 
         {error && <p className="text-red-500">{error}</p>}
-        
+
         {message && <p className="text-yellow-600 mb-4">{message}</p>}  {/* Mostrar mensaje */}
 
         <input
@@ -77,7 +78,10 @@ export default function LoginPage() {
         </button>
 
         <p className="text-center text-sm">
-          ¿No tienes cuenta? <a href="/register" className="text-blue-600">Regístrate</a>
+          ¿No tienes cuenta?{" "}
+          <Link to="/register" className="text-blue-600 hover:underline">
+            Regístrate
+          </Link>
         </p>
 
         <button
