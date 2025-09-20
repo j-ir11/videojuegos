@@ -11,13 +11,7 @@ const FormularioPago = ({ onProcesarPago, onCancelar, loading }) => {
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
-  const isValidMastercard = (cardNumber) => {
-    const cleaned = cardNumber.replace(/\s/g, '');
-    if (cleaned.length !== 16) return false;
-    const firstTwo = parseInt(cleaned.substring(0, 2));
-    const firstFour = parseInt(cleaned.substring(0, 4));
-    return (firstTwo >= 51 && firstTwo <= 55) || (firstFour >= 2221 && firstFour <= 2720);
-  };
+  // --- SE ELIMINÓ LA FUNCIÓN isValidMastercard ---
 
   const isValidLuhn = (cardNumber) => {
     const cleaned = cardNumber.replace(/\s/g, '');
@@ -49,10 +43,13 @@ const FormularioPago = ({ onProcesarPago, onCancelar, loading }) => {
   const validate = () => {
     const newErrors = {};
     const cardNumber = formData.numeroTarjeta.replace(/\s/g, '');
-    if (!isValidMastercard(cardNumber)) {
-      newErrors.numeroTarjeta = 'Número de Mastercard inválido';
+
+    // --- SE MODIFICÓ LA VALIDACIÓN DE TARJETA ---
+    // Se eliminó la validación de Mastercard y se agregó una validación de longitud general.
+    if (cardNumber.length !== 16) {
+        newErrors.numeroTarjeta = 'El número de tarjeta debe tener 16 dígitos';
     } else if (!isValidLuhn(cardNumber)) {
-      newErrors.numeroTarjeta = 'Número de tarjeta inválido';
+        newErrors.numeroTarjeta = 'Número de tarjeta inválido';
     }
 
     if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(formData.nombreTitular.trim())) {
@@ -120,7 +117,8 @@ const FormularioPago = ({ onProcesarPago, onCancelar, loading }) => {
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Número de tarjeta Mastercard
+            {/* --- SE CAMBIÓ EL TEXTO DEL LABEL --- */}
+            Número de tarjeta
           </label>
           <input
             type="text"
