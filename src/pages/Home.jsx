@@ -216,7 +216,7 @@ export default function Home() {
   
             {/* Derechos */}
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              &copy; {new Date().getFullYear()} JamedGames. Creado por Jair, Amed y Jemmy
+              &copy; {new Date().getFullYear()} JamedGames. 
             </div>
   
             {/* Redes sociales */}
