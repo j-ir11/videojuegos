@@ -216,7 +216,7 @@ export default function Home() {
   
             {/* Derechos */}
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              &copy; {new Date().getFullYear()} JamedGames. 
+              &copy; {new Date().getFullYear()} Jamed Andre Games. 
             </div>
   
             {/* Redes sociales */}
