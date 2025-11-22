@@ -6,6 +6,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [nameMessage, setNameMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      // 1. Registrar usuario en Supabase Auth
+      // Registrar usuario en Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -30,7 +31,7 @@ export default function RegisterPage() {
       if (authError) throw authError;
       if (!authData.user) throw new Error("No se recibió datos del usuario");
 
-      // 2. Insertar en tabla usuarios
+      // Insertar en tabla usuarios
       const { error: insertError } = await supabase
         .from("usuarios")
         .insert([
@@ -44,12 +45,11 @@ export default function RegisterPage() {
 
       if (insertError) throw insertError;
 
-      // 3. Verificar si se requiere confirmación de email
+      // Confirmación de email
       if (authData.user?.identities?.length === 0) {
         alert("Por favor verifica tu correo electrónico para completar el registro");
       }
 
-      // 4. Redirigir al dashboard/home
       navigate("/");
 
     } catch (err) {
@@ -57,6 +57,30 @@ export default function RegisterPage() {
       setError(err.message || "Error durante el registro");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Validación SOLO letras + acentos + espacios
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+
+    // Solo letras y espacios (incluye acentos y ñ)
+    const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]*$/;
+
+    // Si intenta meter símbolos o números, no escribe
+    if (!regex.test(value)) {
+      return;
+    }
+
+    setName(value);
+
+    // Validaciones de mensaje
+    if (value.length === 100) {
+      setNameMessage("Has llegado al límite de 100 caracteres.");
+    } else if (value.length > 0 && value.length < 2) {
+      setNameMessage("El nombre debe tener al menos 2 letras.");
+    } else {
+      setNameMessage("");
     }
   };
 
@@ -76,25 +100,21 @@ export default function RegisterPage() {
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Nombre completo
             </label>
+
             <input
               id="name"
               type="text"
               placeholder="Tu nombre"
               value={name}
               maxLength={100}
-              onChange={(e) => {
-                const value = e.target.value;
-                setName(value);
-
-                if (value.length === 100) {
-                  setNameMessage("Has llegado al límite de 100 caracteres.");
-                } else {
-                  setNameMessage("");
-                }
-              }}
+              onChange={handleNameChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
               required
             />
+
+            {nameMessage && (
+              <p className="text-sm text-red-500 mt-1">{nameMessage}</p>
+            )}
           </div>
 
           <div>
@@ -136,7 +156,7 @@ export default function RegisterPage() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || nameMessage !== ""} // Bloquea registro si el nombre es inválido
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? (
