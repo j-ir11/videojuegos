@@ -80,23 +80,52 @@ export default function RegisterPage() {
   };
 
   // VALIDAR EMAIL
+  // VALIDAR EMAIL (sin caracteres especiales y más reglas fuertes)
   const handleEmailChange = (e) => {
-    const value = e.target.value;
+    let value = e.target.value;
 
-    if (value.length > 255) return; // Bloqueo duro
+    // Permitir solo letras, números, @, ., _
+    value = value.replace(/[^a-zA-Z0-9@._]/g, "");
+
+    // Máximo 255
+    if (value.length > 255) return;
 
     setEmail(value);
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // REGLAS ADICIONALES
+    if (value.startsWith(".") || value.startsWith("_") || value.startsWith("-")) {
+      setEmailMessage("El correo no puede iniciar con un punto o símbolo.");
+      return;
+    }
+
+    if (value.endsWith(".")) {
+      setEmailMessage("El correo no puede terminar con un punto.");
+      return;
+    }
+
+    if ((value.match(/@/g) || []).length > 1) {
+      setEmailMessage("El correo no puede tener más de un '@'.");
+      return;
+    }
+
+    if (value.includes("..")) {
+      setEmailMessage("El correo no puede contener '..'.");
+      return;
+    }
+
+    // REGEX FINAL (permitiendo solo lo que especificamos)
+    const emailRegex =
+      /^[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
     if (value.length === 255) {
       setEmailMessage("Has llegado al límite de 255 caracteres.");
     } else if (value.length > 0 && !emailRegex.test(value)) {
-      setEmailMessage("Formato inválido. Ejemplo correcto: usuario@correo.com");
+      setEmailMessage("Formato inválido. Ejemplo: usuario@correo.com");
     } else {
       setEmailMessage("");
     }
   };
+
 
   // VALIDAR CONTRASEÑA
   const handlePasswordChange = (e) => {
