@@ -58,10 +58,16 @@ export default function LoginPage() {
           type="email"
           placeholder="Correo electrónico"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          maxLength={255}
+          onChange={(e) => {
+            if (e.target.value.length <= 255) {
+              setEmail(e.target.value);
+            }
+          }}
           className="w-full border rounded px-4 py-2 bg-gray-50 dark:bg-gray-700 dark:text-white"
           required
         />
+
 
         <input
           type="password"

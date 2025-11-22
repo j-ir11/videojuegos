@@ -96,7 +96,12 @@ export default function RegisterPage() {
               type="email"
               placeholder="tu@email.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              maxLength={255}
+              onChange={(e) => {
+                if (e.target.value.length <= 255) {
+                  setEmail(e.target.value);
+                }
+              }}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
               required
             />
