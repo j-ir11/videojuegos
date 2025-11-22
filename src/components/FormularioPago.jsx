@@ -165,13 +165,46 @@ const FormularioPago = ({ onProcesarPago, onCancelar, loading }) => {
           <input
             type="text"
             value={formData.nombreTitular}
-            onChange={(e) => setFormData({ ...formData, nombreTitular: formatName(e.target.value) })}
-            onBlur={() => handleBlur('nombreTitular')}
+            maxLength={100}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              // Actualiza contador
+              setNameCount(value.length);
+
+              // Aplica formato del nombre
+              if (value.length <= 100) {
+                setFormData({
+                  ...formData,
+                  nombreTitular: formatName(value)
+                });
+              }
+
+              // Manejo del mensaje
+              if (value.length === 100) {
+                setNameLimitMessage("Has llegado al límite de 100 caracteres.");
+              } else {
+                setNameLimitMessage("");
+              }
+            }}
+            onBlur={() => handleBlur("nombreTitular")}
             placeholder="Como aparece en la tarjeta"
             className={`w-full p-3 border rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${
-              errors.nombreTitular ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+              errors.nombreTitular
+                ? "border-red-500"
+                : "border-gray-300 dark:border-gray-600"
             }`}
           />
+
+          {/* Contador */}
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 text-right">
+            {nameCount} / 100
+          </p>
+
+          {/* Mensaje de límite */}
+          {nameLimitMessage && (
+            <p className="text-yellow-600 text-sm mt-1">{nameLimitMessage}</p>
+          )}
           {errors.nombreTitular && (
             <p className="text-red-600 dark:text-red-400 text-xs mt-1">{errors.nombreTitular}</p>
           )}
