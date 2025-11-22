@@ -46,11 +46,30 @@ const FormularioPago = ({ onProcesarPago, onCancelar, loading }) => {
 
     // --- SE MODIFICÓ LA VALIDACIÓN DE TARJETA ---
     // Se eliminó la validación de Mastercard y se agregó una validación de longitud general.
+    // Validación general de número de tarjeta
     if (cardNumber.length !== 16) {
         newErrors.numeroTarjeta = 'El número de tarjeta debe tener 16 dígitos';
-    } else if (!isValidLuhn(cardNumber)) {
+    }
+    // Evitar solo ceros
+    else if (/^0+$/.test(cardNumber)) {
+        newErrors.numeroTarjeta = 'El número de tarjeta no puede ser solo ceros';
+    }
+    // Evitar 16 dígitos repetidos (1111..., 2222..., etc)
+    else if (/^(\d)\1{15}$/.test(cardNumber)) {
+        newErrors.numeroTarjeta = 'Número de tarjeta inválido (todos los dígitos son iguales)';
+    }
+    // Evitar secuencias ascendentes o descendentes comunes
+    else if (
+        cardNumber === "1234567890123456" ||
+        cardNumber === "6543210987654321"
+    ) {
+        newErrors.numeroTarjeta = 'Número de tarjeta inválido (secuencia numérica)';
+    }
+    // Validación del algoritmo Luhn
+    else if (!isValidLuhn(cardNumber)) {
         newErrors.numeroTarjeta = 'Número de tarjeta inválido';
     }
+
 
     if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(formData.nombreTitular.trim())) {
       newErrors.nombreTitular = 'Solo se permiten letras y espacios';
