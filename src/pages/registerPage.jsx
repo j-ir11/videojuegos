@@ -81,7 +81,17 @@ export default function RegisterPage() {
               type="text"
               placeholder="Tu nombre"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              maxLength={100}
+              onChange={(e) => {
+                const value = e.target.value;
+                setName(value);
+
+                if (value.length === 100) {
+                  setNameMessage("Has llegado al límite de 100 caracteres.");
+                } else {
+                  setNameMessage("");
+                }
+              }}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
               required
             />
