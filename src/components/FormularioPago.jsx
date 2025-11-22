@@ -170,9 +170,9 @@ const FormularioPago = ({ onProcesarPago, onCancelar, loading }) => {
               const value = e.target.value;
 
               if (value.length <= 100) {
-                setFormData({
-                  ...formData,
-                  nombreTitular: formatName(value)
+                setFormData({ 
+                  ...formData, 
+                  nombreTitular: formatName(value) 
                 });
               }
 
