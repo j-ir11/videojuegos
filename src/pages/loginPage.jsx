@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import { supabase } from "../services/supabaseClient";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { supabase } from "../supabaseClient";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");  
+  const [message, setMessage] = useState("");
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,11 +16,12 @@ export default function LoginPage() {
     if (location.state?.message) {
       setMessage(location.state.message);
     }
-  }, [location.state]);
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
+
+    if (emailMessage !== "") return;
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -29,9 +30,10 @@ export default function LoginPage() {
 
     if (error) {
       setError(error.message);
-    } else {
-      navigate("/");
+      return;
     }
+
+    navigate("/");
   };
 
   const handleGoBack = () => {
@@ -42,18 +44,13 @@ export default function LoginPage() {
     }
   };
 
-  // VALIDACIÓN DE EMAIL IGUAL QUE EN REGISTRO
   const handleEmailChange = (e) => {
     let value = e.target.value;
-
-    // Permitir solo letras, números, ., _, @
     value = value.replace(/[^a-zA-Z0-9@._]/g, "");
-
     if (value.length > 255) return;
 
     setEmail(value);
 
-    // REGLAS EXTRA
     if (value.startsWith(".") || value.startsWith("_") || value.startsWith("-")) {
       setEmailMessage("El correo no puede iniciar con un punto o símbolo.");
       return;
@@ -74,7 +71,6 @@ export default function LoginPage() {
       return;
     }
 
-    // REGEX FINAL
     const emailRegex = /^[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
     if (value.length === 255) {
@@ -94,7 +90,6 @@ export default function LoginPage() {
         {error && <p className="text-red-500">{error}</p>}
         {message && <p className="text-yellow-600 mb-4">{message}</p>}
 
-        {/* EMAIL */}
         <div>
           <input
             type="text"
@@ -108,7 +103,6 @@ export default function LoginPage() {
           {emailMessage && <p className="text-sm text-red-500 mt-1">{emailMessage}</p>}
         </div>
 
-        {/* PASSWORD */}
         <input
           type="password"
           placeholder="Contraseña"
@@ -125,13 +119,6 @@ export default function LoginPage() {
         >
           Iniciar sesión
         </button>
-
-        <p className="text-center text-sm text-gray-700 dark:text-gray-300">
-          ¿No tienes cuenta?{" "}
-          <Link to="/register" className="text-blue-600 hover:underline dark:text-blue-400">
-            Regístrate
-          </Link>
-        </p>
 
         <button
           type="button"
