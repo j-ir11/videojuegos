@@ -19,28 +19,26 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      // Registrar usuario en Supabase Auth
+      // Registrar en Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          data: {
-            name,
-          },
+          data: { name },
         },
       });
 
       if (authError) throw authError;
-      if (!authData.user) throw new Error("No se recibió datos del usuario");
+      if (!authData.user) throw new Error("No se recibió información de usuario");
 
-      // Insertar usuario en tabla
+      // Insertar en tabla usuarios
       const { error: insertError } = await supabase
         .from("usuarios")
         .insert([
           {
             id_usuario: authData.user.id,
             nombre: name,
-            email: email,
+            email,
             fecha_registro: new Date().toISOString(),
           },
         ]);
@@ -79,22 +77,18 @@ export default function RegisterPage() {
     }
   };
 
-  // VALIDAR EMAIL
-  // VALIDAR EMAIL (sin caracteres especiales y más reglas fuertes)
+  // VALIDAR EMAIL (CORREGIDO)
   const handleEmailChange = (e) => {
     let value = e.target.value;
 
-    // Permitir solo letras, números, @, ., _
-    value = value.replace(/[^a-zA-Z0-9@._]/g, "");
+    value = value.replace(/[^a-zA-Z0-9@._-]/g, "");
 
-    // Máximo 255
     if (value.length > 255) return;
 
     setEmail(value);
 
-    // REGLAS ADICIONALES
-    if (value.startsWith(".") || value.startsWith("_") || value.startsWith("-")) {
-      setEmailMessage("El correo no puede iniciar con un punto o símbolo.");
+    if (/^[._-]/.test(value)) {
+      setEmailMessage("El correo no puede iniciar con un símbolo.");
       return;
     }
 
@@ -113,19 +107,17 @@ export default function RegisterPage() {
       return;
     }
 
-    // REGEX FINAL (permitiendo solo lo que especificamos)
     const emailRegex =
-      /^[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
     if (value.length === 255) {
       setEmailMessage("Has llegado al límite de 255 caracteres.");
     } else if (value.length > 0 && !emailRegex.test(value)) {
-      setEmailMessage("Formato inválido. Ejemplo: usuario@correo.com");
+      setEmailMessage("Correo inválido. Ejemplo: usuario@correo.com");
     } else {
       setEmailMessage("");
     }
   };
-
 
   // VALIDAR CONTRASEÑA
   const handlePasswordChange = (e) => {
@@ -210,8 +202,10 @@ export default function RegisterPage() {
             />
             {passwordMessage && <p className="text-sm text-red-500 mt-1">{passwordMessage}</p>}
           </div>
+
         </div>
 
+        {/* BOTÓN */}
         <button
           type="submit"
           disabled={
