@@ -38,7 +38,7 @@ export default function RegisterPage() {
           {
             id_usuario: authData.user.id,
             nombre: name,
-            email,
+            email: email,
             fecha_registro: new Date().toISOString(),
           },
         ]);
