@@ -46,11 +46,30 @@ const FormularioPago = ({ onProcesarPago, onCancelar, loading }) => {
 
     // --- SE MODIFICÓ LA VALIDACIÓN DE TARJETA ---
     // Se eliminó la validación de Mastercard y se agregó una validación de longitud general.
+    // Validación general de número de tarjeta
     if (cardNumber.length !== 16) {
         newErrors.numeroTarjeta = 'El número de tarjeta debe tener 16 dígitos';
-    } else if (!isValidLuhn(cardNumber)) {
+    }
+    // Evitar solo ceros
+    else if (/^0+$/.test(cardNumber)) {
+        newErrors.numeroTarjeta = 'El número de tarjeta no puede ser solo ceros';
+    }
+    // Evitar 16 dígitos repetidos (1111..., 2222..., etc)
+    else if (/^(\d)\1{15}$/.test(cardNumber)) {
+        newErrors.numeroTarjeta = 'Número de tarjeta inválido (todos los dígitos son iguales)';
+    }
+    // Evitar secuencias ascendentes o descendentes comunes
+    else if (
+        cardNumber === "1234567890123456" ||
+        cardNumber === "6543210987654321"
+    ) {
+        newErrors.numeroTarjeta = 'Número de tarjeta inválido (secuencia numérica)';
+    }
+    // Validación del algoritmo Luhn
+    else if (!isValidLuhn(cardNumber)) {
         newErrors.numeroTarjeta = 'Número de tarjeta inválido';
     }
+
 
     if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(formData.nombreTitular.trim())) {
       newErrors.nombreTitular = 'Solo se permiten letras y espacios';
@@ -146,13 +165,30 @@ const FormularioPago = ({ onProcesarPago, onCancelar, loading }) => {
           <input
             type="text"
             value={formData.nombreTitular}
-            onChange={(e) => setFormData({ ...formData, nombreTitular: formatName(e.target.value) })}
+            maxLength={100}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (value.length <= 100) {
+                setFormData({ 
+                  ...formData, 
+                  nombreTitular: formatName(value) 
+                });
+              }
+
+              if (value.length === 100) {
+                setNameLimitMessage("Has llegado al límite de 100 caracteres.");
+              } else {
+                setNameLimitMessage("");
+              }
+            }}
             onBlur={() => handleBlur('nombreTitular')}
             placeholder="Como aparece en la tarjeta"
             className={`w-full p-3 border rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${
               errors.nombreTitular ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
             }`}
           />
+
           {errors.nombreTitular && (
             <p className="text-red-600 dark:text-red-400 text-xs mt-1">{errors.nombreTitular}</p>
           )}
